@@ -4,6 +4,8 @@ Fully written using various amazing features of android and java like ExecutorSe
 Handler, Looper, Threads, Runnable, Callable, json, http, BlockingDeque, Hashtable, WeakReferences, 
 RecyclerView, various CustomViews...etc
 
+todo : generify task, proper testing and profiling
+
 ![Alt text](Screenshot_1554748776.png?raw=true "Screenshot")
 ![Alt text](Screenshot_1554748781.png?raw=true "Screenshot")
 ![Alt text](Screenshot_1554748784.png?raw=true "Screenshot")
