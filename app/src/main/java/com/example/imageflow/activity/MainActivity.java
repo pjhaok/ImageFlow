@@ -279,8 +279,8 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
                 models.addAll(JsonParser.parseJSON(jsonText));
 
                 // todo  for testing many lines
-                models.addAll(models);
-                models.addAll(models);
+                // models.addAll(models);
+               // models.addAll(models);
 
                 Log.d("Adapter0", "" +models.size());
 
