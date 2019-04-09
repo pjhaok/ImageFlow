@@ -34,7 +34,7 @@ IFThreadPoolHandler.getInstance().removeTask(String tag);
 
 todo: proper testing and profiling
 
-![Alt text](Screenshot_1554748776.png?raw=true "Screenshot")
+![Alt text](Screenshot_1554748776.png?| width=100 "Screenshot")
 ![Alt text](Screenshot_1554748781.png?raw=true "Screenshot")
 ![Alt text](Screenshot_1554748784.png?raw=true "Screenshot")
 ![Alt text](Screenshot_1554748787.png?raw=true "Screenshot")
