@@ -34,8 +34,8 @@ IFThreadPoolHandler.getInstance().removeTask(String tag);
 
 todo: proper testing and profiling
 
-<img src = "/Screenshot_1554748776.png" width = "360"/>
-<img src = "/Screenshot_1554748781.png" width = "360"/>
-<img src = "/Screenshot_1554748784.png" width = "360"/>
-<img src = "/Screenshot_1554748787.png" width = "360"/>
+<img align="left" src = "/Screenshot_1554748776.png" width = "360"/>
+<img align="right" src = "/Screenshot_1554748781.png" width = "360"/>
+<img align="left" src = "/Screenshot_1554748784.png" width = "360"/>
+<img align="right" src = "/Screenshot_1554748787.png" width = "360"/>
 
