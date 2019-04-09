@@ -34,6 +34,6 @@ IFThreadPoolHandler.getInstance().removeTask(String tag);
 
 todo: proper testing and profiling
 
-<img align="center" src = "/imageflow.gif" width = "360"/>
+<img src = "/imageflow.gif" width = "360"/>
 
 
