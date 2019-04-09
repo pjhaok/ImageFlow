@@ -1,12 +1,15 @@
 package com.example.imageflow.datapump.executors;
 
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Message;
 import android.os.Process;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.imageflow.parser.JsonParser;
+import com.example.imageflow.datapump.runnables.DownloadTask;
+import com.example.imageflow.datapump.runnables.UiUpdateTask;
+import com.example.imageflow.interfaces.Callback;
+import com.example.imageflow.model.TaskModel;
 import com.example.imageflow.datapump.runnables.JsonTask;
 import com.example.imageflow.datapump.runnables.Task;
 import com.example.imageflow.datapump.tasktypes.FileType;
@@ -14,6 +17,7 @@ import com.example.imageflow.interfaces.IFTaskupdate;
 import com.example.imageflow.utility.Constants;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
@@ -24,8 +28,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 
 
 public class IFThreadPoolHandler {
@@ -35,6 +37,10 @@ public class IFThreadPoolHandler {
 
     private final ExecutorService executorService;
     private final BlockingDeque<Runnable> taskQueue;
+
+
+    // string is url and cache is object
+    public static Hashtable<String, TaskModel> cacheTable = new Hashtable<>();
 
     Hashtable<String, Future> threadFutureTable ;
 
@@ -131,7 +137,20 @@ public class IFThreadPoolHandler {
 
 
 
-    public void addDownloadTask( Task task) {
+//    public void addDownloadTask( Task task) {
+//
+//        task.setThreadPoolManager(this);
+//        Future future = executorService.submit(task);
+//        // add this future in a list for future usage or to cancel the task
+//
+//        //runningTaskList.add(future);
+//        threadFutureTable.put(task.getTag(), future);
+//
+//       // return future;
+//    }
+
+
+    public void addDownloadTask(Task task, Callback callback) {
 
         task.setThreadPoolManager(this);
         Future future = executorService.submit(task);
@@ -140,8 +159,9 @@ public class IFThreadPoolHandler {
         //runningTaskList.add(future);
         threadFutureTable.put(task.getTag(), future);
 
-       // return future;
+        // return future;
     }
+
 
 
     public Future addCallable( String tag, Callable callable) {
@@ -155,21 +175,64 @@ public class IFThreadPoolHandler {
         return future;
     }
 
-    public void getFile(String tag, String url, FileType type, IFTaskupdate updatable) {
+
+    public void getFile(String tag , String url, FileType type, Callback.IFCallBack callback) {
+
+        UiUpdateTask drUpdateTask = new UiUpdateTask(callback);
+
+        if (cacheTable.containsKey(url) && type == FileType.IMAGES) {
+
+            cacheTable.get(url).setLastTimeUsed(new Date());
+
+            drUpdateTask.setBackgroundMsg(tag, true, cacheTable.get(url));
+            runOnMainThread(drUpdateTask);
 
 
-        if (type == FileType.JSON) {
+        } else {
 
-            Task task = new JsonTask("JSON", url, this , updatable);
-            Future future = executorService.submit(task);
-            threadFutureTable.put(task.getTag(), future);
+            Task task;
 
-            Log.d("JSON", "fired2");
+            if (type == FileType.IMAGES) {
+                task = new DownloadTask(tag,this, url, type, drUpdateTask);
+                Future future = executorService.submit(task);
+                threadFutureTable.put(task.getTag(), future);
+            } else if (type == FileType.JSON) {
+
+                task = new JsonTask(tag,this, url, type, drUpdateTask);
+                Future future = executorService.submit(task);
+                threadFutureTable.put(task.getTag(), future);
+
+            }
+
         }
+    }
+
+    public void addToCacheTable(String url, TaskModel taskModel) {
 
 
+        cacheTable.put(url, taskModel);
 
     }
+
+
+//    public void getFile(String tag, String url, FileType type, IFTaskupdate updatable) {
+//
+//
+//
+//        if (type == FileType.JSON) {
+//
+//
+//
+//            Task task = new DownloadTask(tag,this, url, type, drUpdateTask);
+//            Future future = executorService.submit(task);
+//            threadFutureTable.put(task.getTag(), future);
+//
+//            Log.d("JSON", "fired2");
+//        }
+//
+//
+//
+//    }
 
 
 

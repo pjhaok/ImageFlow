@@ -2,9 +2,11 @@ package com.example.imageflow.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,8 +24,10 @@ import com.example.imageflow.datapump.executors.IFThreadPoolHandler;
 import com.example.imageflow.R;
 import com.example.imageflow.adapter.IFRecyclerViewAdapter;
 import com.example.imageflow.datapump.tasktypes.FileType;
+import com.example.imageflow.interfaces.Callback;
 import com.example.imageflow.interfaces.IFTaskupdate;
 import com.example.imageflow.model.DataModel;
+import com.example.imageflow.model.TaskModel;
 import com.example.imageflow.parser.JsonParser;
 import com.example.imageflow.utility.Constants;
 import com.example.imageflow.view.IFProgressBar;
@@ -235,9 +239,42 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
     private void getJSON(String urlString) {
 
         progressBar.setVisibility(View.VISIBLE);
-        IFThreadPoolHandler.getInstance().getFile("JSON", urlString, FileType.JSON, this);
-        Log.d("JSON", "fired1");
+      //  IFThreadPoolHandler.getInstance().getFile("JSON", urlString, FileType.JSON, new Callback.IFCallBack(){});
 
+
+
+        IFThreadPoolHandler.getInstance().getFile("MainJSON", urlString, FileType.JSON , new Callback.IFCallBack(){
+
+            @Override
+            public void onSuccess(@NonNull TaskModel taskModel) {
+
+                if (taskModel.getType() == FileType.JSON) {
+                    String jsonText = (String) taskModel.getObject();
+
+                    models.clear();
+                    models.addAll(JsonParser.parseJSON(jsonText));
+
+                    // todo  for testing many lines
+                    models.addAll(models);
+                    models.addAll(models);
+                    Log.d("Adapter0", "" +models.size());
+
+                    loadView();
+
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onError(@NonNull String message) {
+                super.onError(message);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(MainActivity.this, "Failed to sync", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -279,8 +316,8 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
                 models.addAll(JsonParser.parseJSON(jsonText));
 
                 // todo  for testing many lines
-                // models.addAll(models);
-               // models.addAll(models);
+                models.addAll(models);
+                models.addAll(models);
 
                 Log.d("Adapter0", "" +models.size());
 

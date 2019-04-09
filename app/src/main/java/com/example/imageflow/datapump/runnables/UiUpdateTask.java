@@ -7,16 +7,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.imageflow.interfaces.Callback;
+import com.example.imageflow.model.TaskModel;
 
 public class UiUpdateTask implements Runnable{
     private String tag;
-    private ImageView imageView;
+
     private boolean isSuccess;
 
-    private Bitmap bitmap;
+    private TaskModel taskModel;
 
     private Callback.IFCallBack callBack;
-
 
     public UiUpdateTask(Callback.IFCallBack callBack) {
 
@@ -24,23 +24,22 @@ public class UiUpdateTask implements Runnable{
 
     }
 
-//    public UiUpdateTask(ImageView imageView){
-//        this.imageView = imageView;
-//
-//    }
 
-
-
-    public void setBackgroundMsg(String tag, boolean isSuccess, Bitmap bitmap){
+    public void setBackgroundMsg(String tag, boolean isSuccess, TaskModel taskModel){
 
         this.isSuccess = isSuccess;
-        this.bitmap = bitmap;
+        this.taskModel = taskModel;
         this.tag = tag;
-
 
 
     }
 
+
+    public void downloadFailed(String tag){
+
+       this.isSuccess = false;
+
+    }
 
     @Override
     public void run() {
@@ -50,7 +49,7 @@ public class UiUpdateTask implements Runnable{
 
             if (isSuccess) {
 
-              callBack.onSuccess(bitmap);
+              callBack.onSuccess(taskModel);
 
             } else {
 

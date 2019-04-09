@@ -22,11 +22,13 @@ import android.widget.Toast;
 import com.example.imageflow.datapump.executors.IFThreadPoolHandler;
 import com.example.imageflow.datapump.runnables.UiUpdateTask;
 import com.example.imageflow.datapump.runnables.DownloadTask;
+import com.example.imageflow.datapump.tasktypes.FileType;
 import com.example.imageflow.interfaces.Callback;
 import com.example.imageflow.interfaces.IFTaskupdate;
 import com.example.imageflow.R;
 import com.example.imageflow.model.DataModel;
 import com.example.imageflow.model.DataModelUrls;
+import com.example.imageflow.model.TaskModel;
 import com.example.imageflow.utility.Constants;
 
 import java.util.List;
@@ -92,12 +94,19 @@ public class IFRecyclerViewAdapter extends RecyclerView.Adapter<IFRecyclerViewAd
       //  Log.d("Adapter", model.getId());
 
 
+      //  UiUpdateTask drUpdateTask = new UiUpdateTask(callBack);
 
-        downloadFile(taskTag,urlsModel.getRegular(),new Callback.IFCallBack(){
+       // DownloadTask downloadTask = new DownloadTask(tag, url, drUpdateTask);
+
+
+        IFThreadPoolHandler.getInstance().getFile(taskTag, urlsModel.getRegular(), FileType.IMAGES , new Callback.IFCallBack(){
 
             @Override
-            public void onSuccess(@NonNull Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
+            public void onSuccess(@NonNull TaskModel taskModel) {
+
+                if (taskModel.getType() == FileType.IMAGES) {
+                    imageView.setImageBitmap((Bitmap) taskModel.getObject());
+                }
 
                 imageView.setVisibility(View.VISIBLE);
                 stopButton.setVisibility(View.GONE);
@@ -118,6 +127,33 @@ public class IFRecyclerViewAdapter extends RecyclerView.Adapter<IFRecyclerViewAd
                 circularProgressBar.setVisibility(View.GONE);
             }
         });
+
+
+//        downloadFile(taskTag,urlsModel.getRegular(),new Callback.IFCallBack(){
+//
+//            @Override
+//            public void onSuccess(@NonNull Bitmap bitmap) {
+//                imageView.setImageBitmap(bitmap);
+//
+//                imageView.setVisibility(View.VISIBLE);
+//                stopButton.setVisibility(View.GONE);
+//                startButton.setVisibility(View.GONE);
+//                statusTextView.setVisibility(View.GONE);
+//                circularProgressBar.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onError(@NonNull String message) {
+//                super.onError(message);
+//                imageView.setVisibility(View.GONE);
+//                stopButton.setVisibility(View.GONE);
+//                startButton.setVisibility(View.VISIBLE);
+//
+//                statusTextView.setText(message);
+//                statusTextView.setVisibility(View.VISIBLE);
+//                circularProgressBar.setVisibility(View.GONE);
+//            }
+//        });
 
 
 
@@ -143,33 +179,6 @@ public class IFRecyclerViewAdapter extends RecyclerView.Adapter<IFRecyclerViewAd
                 startButton.setVisibility(View.GONE);
                 stopButton.setVisibility(View.VISIBLE);
 
-                downloadFile(taskTag,urlsModel.getRegular(),new Callback.IFCallBack(){
-
-                    @Override
-                    public void onSuccess(@NonNull Bitmap bitmap) {
-
-                        imageView.setVisibility(View.GONE);
-                        imageView.setImageBitmap(bitmap);
-                        stopButton.setVisibility(View.GONE);
-                        startButton.setVisibility(View.GONE);
-                        statusTextView.setVisibility(View.GONE);
-                        circularProgressBar.setVisibility(View.GONE);
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull String message) {
-                        super.onError(message);
-                        imageView.setVisibility(View.GONE);
-                        stopButton.setVisibility(View.GONE);
-                        startButton.setVisibility(View.VISIBLE);
-
-                        statusTextView.setText(message);
-                        statusTextView.setVisibility(View.VISIBLE);
-                        circularProgressBar.setVisibility(View.GONE);
-
-                    }
-                });
 
             }
         });
@@ -204,15 +213,25 @@ public class IFRecyclerViewAdapter extends RecyclerView.Adapter<IFRecyclerViewAd
     }
 
 
-  private void downloadFile(String tag, String url, Callback.IFCallBack callBack){
+//  private void downloadFile(String tag, String url, Callback.IFCallBack callBack){
+//
+//        UiUpdateTask drUpdateTask = new UiUpdateTask(callBack);
+//
+//        DownloadTask downloadTask = new DownloadTask(tag, url, drUpdateTask);
+//        IFThreadPoolHandler.getInstance().addDownloadTask(downloadTask);
+//
+//    }
 
-        UiUpdateTask drUpdateTask = new UiUpdateTask(callBack);
 
-        DownloadTask downloadTask = new DownloadTask(tag, url, drUpdateTask);
-         IFThreadPoolHandler.getInstance().addDownloadTask(downloadTask);
-
-    }
-
+//    private void downloadFile(String tag, String url, Callback.IFCallBack callBack){
+//
+//        UiUpdateTask drUpdateTask = new UiUpdateTask(callBack);
+//
+//        DownloadTask downloadTask = new DownloadTask(tag, url, drUpdateTask);
+//        IFThreadPoolHandler.getInstance().addDownloadTask(downloadTask);
+//
+//    }
+//
     private void removeTask(String tag) {
 
         IFThreadPoolHandler.getInstance().removeTask(tag);

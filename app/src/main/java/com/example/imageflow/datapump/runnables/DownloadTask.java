@@ -2,33 +2,35 @@ package com.example.imageflow.datapump.runnables;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.example.imageflow.datapump.executors.IFThreadPoolHandler;
+import com.example.imageflow.datapump.tasktypes.FileType;
+import com.example.imageflow.model.TaskModel;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 public class DownloadTask extends Task{
 
 
     private String tag;
     private String urlString;
-
-    UiUpdateTask resultUpdateTask;
+    private UiUpdateTask resultUpdateTask;
     private IFThreadPoolHandler ifThreadPoolHandler;
+    private FileType type;
 
-    public DownloadTask( String tag, String urlIn,
+
+
+    public DownloadTask( String tag, IFThreadPoolHandler handler, String urlIn, FileType type,
                         UiUpdateTask drUpdateTask){
         this.tag = tag;
-       urlString = urlIn;
-
+        urlString = urlIn;
+        this.ifThreadPoolHandler = handler;
+        this.type = type;
         resultUpdateTask = drUpdateTask;
 
 
@@ -47,10 +49,14 @@ public class DownloadTask extends Task{
         try {
             bitmap = downloadFile();
 
-            resultUpdateTask.setBackgroundMsg(this.tag, true, bitmap);
+            TaskModel taskModel =   new TaskModel(urlString,this.type, bitmap, new Date());
+
+            IFThreadPoolHandler.getInstance().addToCacheTable(urlString, taskModel);
+
+            resultUpdateTask.setBackgroundMsg(this.tag, true, taskModel);
         } catch (IOException e) {
 
-            resultUpdateTask.setBackgroundMsg(this.tag, false, bitmap);
+            resultUpdateTask.downloadFailed(tag);
             e.printStackTrace();
         }
 
@@ -87,10 +93,7 @@ public class DownloadTask extends Task{
                 input.close();
             }
 
-
         }
-
-
 
     }
 
