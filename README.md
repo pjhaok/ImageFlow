@@ -11,17 +11,14 @@ For geting a file from url, call
 IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type , new Callback.IFCallBack(){
             @Override
             public void onSuccess(@NonNull TaskModel taskModel) {
-
-            //    if (taskModel.getType() == FileType.IMAGES) {
-              //      Bitmap bitmap = (Bitmap) taskModel.getObject());
-              //  }  
-                
+               super.onSuccess(taskModel)
+               Log.d("onSuccess", message );
                 }
 
             @Override
             public void onError(@NonNull String message) {
                 super.onError(message);
-                Log.d("Error", message);
+                Log.d("onError", message);
             }
         });
  ```      
