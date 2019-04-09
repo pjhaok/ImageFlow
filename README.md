@@ -6,7 +6,7 @@ RecyclerView, various CustomViews...etc
 
 ## now added in memory caching of files  
 
-// for geting file simply call
+// for geting a file from url, simply call
 
 IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type , new Callback.IFCallBack(){
 
