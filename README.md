@@ -6,10 +6,9 @@ RecyclerView, various CustomViews...etc
 
 ## now added in memory caching of files  
 
-// for geting a file from url, simply call
-
+For geting a file from url, simply call
+```
 IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type , new Callback.IFCallBack(){
-
             @Override
             public void onSuccess(@NonNull TaskModel taskModel) {
 
@@ -25,17 +24,18 @@ IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type 
                 Log.d("Error", message);
             }
         });
-        
-// for canceling all task  just call
-
+ ```      
+For canceling all task  just call
+```
  IFThreadPoolHandler.getInstance().stopAndClearAllThreads();
-
-// for canceling any particular task just call
+```
+For canceling any particular task just call
+ ```
 IFThreadPoolHandler.getInstance().removeTask(String tag);
-        
+ ```       
         
 
-todo : generify task, proper testing and profiling
+todo: proper testing and profiling
 
 ![Alt text](Screenshot_1554748776.png?raw=true "Screenshot")
 ![Alt text](Screenshot_1554748781.png?raw=true "Screenshot")
