@@ -8,7 +8,7 @@ RecyclerView, various CustomViews...etc
 
 For geting a file from url, call
 ```
-IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type , new Callback.IFCallBack(){
+IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type, new Callback.IFCallBack(){
             @Override
             public void onSuccess(@NonNull TaskModel taskModel) {
                super.onSuccess(taskModel)
