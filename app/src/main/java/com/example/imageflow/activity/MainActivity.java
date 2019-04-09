@@ -255,9 +255,9 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
                     models.addAll(JsonParser.parseJSON(jsonText));
 
                     // todo  for testing many lines
-                    models.addAll(models);
-                    models.addAll(models);
-                    Log.d("Adapter0", "" +models.size());
+                   // models.addAll(models);
+                   // models.addAll(models);
+                    Log.d("Adapter", "" +models.size());
 
                     loadView();
 
@@ -303,48 +303,48 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
     @Override
     public void update(Message message)  {
 
-        if (message.what == 2) {
+//         if (message.what == 2) {
 
 
-            Bundle bundle = message.getData();
+//             Bundle bundle = message.getData();
 
-            if (bundle.getBoolean(Constants.RESULT)) {
+//             if (bundle.getBoolean(Constants.RESULT)) {
 
-                String jsonText = bundle.getString(Constants.DATA_STRING);
+//                 String jsonText = bundle.getString(Constants.DATA_STRING);
 
-                models.clear();
-                models.addAll(JsonParser.parseJSON(jsonText));
+//                 models.clear();
+//                 models.addAll(JsonParser.parseJSON(jsonText));
 
-                // todo  for testing many lines
-                models.addAll(models);
-                models.addAll(models);
+//                 // todo  for testing many lines
+//                 models.addAll(models);
+//                 models.addAll(models);
 
-                Log.d("Adapter0", "" +models.size());
-
-
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
+//                 Log.d("Adapter0", "" +models.size());
 
 
-
-                            loadView();
-
-
-                        }
-                    };
-
-                    Handler handler = new Handler(this.getMainLooper());
-
-                    handler.post(runnable);
+//                     Runnable runnable = new Runnable() {
+//                         @Override
+//                         public void run() {
 
 
 
-            }} else {
+//                             loadView();
 
-                Log.d("JSON", "fired6.2");
 
-            }
+//                         }
+//                     };
+
+//                     Handler handler = new Handler(this.getMainLooper());
+
+//                     handler.post(runnable);
+
+
+
+//             }} else {
+
+//                 Log.d("JSON", "fired6.2");
+
+//             }
 
 
         }
