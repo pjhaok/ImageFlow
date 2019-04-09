@@ -12,7 +12,6 @@ IFThreadPoolHandler.getInstance().getFile(String tag, String url, FileType type,
             @Override
             public void onSuccess(@NonNull TaskModel taskModel) {
                super.onSuccess(taskModel)
-               Log.d("onSuccess", message );
                 }
 
             @Override
