@@ -9,7 +9,7 @@ public class Constants {
 
 
     // private static int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-    public static int NUMBER_OF_CORES = 20;
+    public static int NUMBER_OF_CORES = 10;
     public static final int KEEP_ALIVE_TIME = 1;
     public static final TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
 
