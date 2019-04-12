@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
                 super.onScrolled(recyclerView, dx, dy);
 
 
-                // todo check 0conditions before creating runnable
+                // todo check conditions before creating runnable
                 recyclerView.post(new Runnable() {
                     public void run() {
                         addmoreRowsToView(layoutmanager.findLastVisibleItemPosition());
