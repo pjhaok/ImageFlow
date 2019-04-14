@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
     private static List<DataModel> modelsRV = new ArrayList<>();
     private IFRecyclerViewAdapter recyclerViewAdapter;
     private IFProgressBar progressBar;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
         getJSON("http://pastebin.com/raw/wgkJgazE");
 
 
-        RecyclerView recyclerView = findViewById(R.id.files_rv);
+         recyclerView = findViewById(R.id.files_rv);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -106,12 +107,11 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
                 super.onScrolled(recyclerView, dx, dy);
 
 
-                // todo check conditions before creating runnable
-                recyclerView.post(new Runnable() {
-                    public void run() {
+               
                         addmoreRowsToView(layoutmanager.findLastVisibleItemPosition());
-                    }
-                });
+
+
+             
 
 
 
@@ -197,7 +197,14 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
             }
 
             Log.d("Rows", "data added " + modelsRV.size() + "   " + models.size());
-            recyclerViewAdapter.notifyItemInserted(modelsRV.size()-1);
+
+
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    recyclerViewAdapter.notifyItemInserted(modelsRV.size()-1);
+                }
+            });
+            
 
 
 
@@ -255,10 +262,10 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
                     models.clear();
                     models.addAll(JsonParser.parseJSON(jsonText));
 
-                    // todo  for testing many lines
+                    //  for testing many data, current jsonfile has only 10 objects
                    // models.addAll(models);
                    // models.addAll(models);
-                    Log.d("Adapter", "" +models.size());
+                    Log.d("Adapter0", "" +models.size());
 
                     loadView();
 
@@ -304,48 +311,48 @@ public class MainActivity extends AppCompatActivity implements IFTaskupdate {
     @Override
     public void update(Message message)  {
 
-//         if (message.what == 2) {
-
-
-//             Bundle bundle = message.getData();
-
-//             if (bundle.getBoolean(Constants.RESULT)) {
-
-//                 String jsonText = bundle.getString(Constants.DATA_STRING);
-
-//                 models.clear();
-//                 models.addAll(JsonParser.parseJSON(jsonText));
-
-//                 // todo  for testing many lines
-//                 models.addAll(models);
-//                 models.addAll(models);
-
-//                 Log.d("Adapter0", "" +models.size());
-
-
-//                     Runnable runnable = new Runnable() {
-//                         @Override
-//                         public void run() {
-
-
-
-//                             loadView();
-
-
-//                         }
-//                     };
-
-//                     Handler handler = new Handler(this.getMainLooper());
-
-//                     handler.post(runnable);
-
-
-
-//             }} else {
-
-//                 Log.d("JSON", "fired6.2");
-
-//             }
+//        if (message.what == 2) {
+//
+//
+//            Bundle bundle = message.getData();
+//
+//            if (bundle.getBoolean(Constants.RESULT)) {
+//
+//                String jsonText = bundle.getString(Constants.DATA_STRING);
+//
+//                models.clear();
+//                models.addAll(JsonParser.parseJSON(jsonText));
+//
+//                // todo  for testing many lines
+//                models.addAll(models);
+//                models.addAll(models);
+//
+//                Log.d("Adapter0", "" +models.size());
+//
+//
+//                    Runnable runnable = new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//
+//
+//                            loadView();
+//
+//
+//                        }
+//                    };
+//
+//                    Handler handler = new Handler(this.getMainLooper());
+//
+//                    handler.post(runnable);
+//
+//
+//
+//            }} else {
+//
+//                Log.d("JSON", "fired6.2");
+//
+//            }
 
 
         }
