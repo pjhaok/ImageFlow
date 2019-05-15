@@ -41,6 +41,9 @@ public class IFRecyclerViewAdapter extends RecyclerView.Adapter<IFRecyclerViewAd
     }
     @Override
     public int getItemCount() {
+        
+        if(models==null) return 0;
+        
         return models.size();
     }
 
